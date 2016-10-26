@@ -3,7 +3,7 @@ const express = require('express'),
       fs = require('fs'),
       app = express();
 
-var userInMemory = JSON.parse(fs.readFileSync('users.json').toString());
+var dataInMemory = JSON.parse(fs.readFileSync('users.json').toString());
 
 app.use(express.static('public'));
 
@@ -13,7 +13,7 @@ app.get('/', function(request, response) {
 
 app.get('/users', function(req, res) {
   console.log('Requesting /users');
-  res.send(pug.renderFile('views/application.pug', { users:userInMemory }));
+  res.send(pug.renderFile('views/application.pug', { users: dataInMemory.users }));
 });
 
 app.listen(3002, function() {

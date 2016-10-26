@@ -12,14 +12,15 @@ html
 
 		.container
 			.row
-				.col-xs-8
+				.col-xs-12
 					h1
+						br
+						br
 						b User Information:
 
 		.container
 			.row
 				each user in users
 					.col-xs-3
-						h3= user.firstname
-						h4= user.lastname
-						p= user.email
+						h3= user.firstname + " " + user.lastname
+						h4= user.email
