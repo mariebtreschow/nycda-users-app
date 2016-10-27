@@ -10,19 +10,15 @@ html
 	body
 		include navbar
 
-		.container
-			.row
-				.col-xs-12
-					h1
-						br
-						br
-						b User Information:
 
-
-		.container
+		form(action="/search" method="POST")
 			.row
-				.col-xs-12
-					each user in users
-						h3= user.firstname + " " + user.lastname
-						h4= "Email address:" + " " + user.email
-						hr
+				.container-fluid
+					.col-xs-4
+					.col-xs-4
+						.form-group
+							h1 Search for users on this page:
+							label(for='username') Username:
+							input#username.form-control(name="query" type='user', aria-describedby='search', placeholder='Search user')
+							br
+							button.btn.btn-success(type='submit') Search
