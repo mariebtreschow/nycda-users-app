@@ -7,9 +7,6 @@ const express = require('express'),
 
 var dataInMemory = JSON.parse(fs.readFileSync('users.json').toString());
 
-
-console.log(dataInMemory);
-
 app.use(express.static('public'));
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false })); //send URL encoded data
@@ -53,16 +50,38 @@ function findUser(query) {
   }
 
 function searchFirstName(query, user) {
-    if (user.firstname.toLowerCase().includes(query.toLowerCase())) {
-      return true;
-    }
+    return user.firstname.toLowerCase().includes(query.toLowerCase());
   }
 
 function searchLastName(query, user) {
-    if (user.lastname.toLowerCase().includes(query.toLowerCase())) {
-      return true;
-    }
+     return user.lastname.toLowerCase().includes(query.toLowerCase());
   }
+
+app.get('/add-user', function(req, res) {
+  console.log('Requesting /add user');
+  res.render('add-user.pug', {});
+});
+
+app.post('/add-user', function(req, res) {
+  var user = {
+    firstname: user.firstname,
+    lastname: user.lastname,
+    email: user.email
+  };
+
+  dataInMemory.push(user);
+  res.redirect('/users/');
+
+  //stringify and send to json file
+
+	json = JSON.stringify(dataInMemory.users);
+
+	fs.writeFile('users.json', json, function (err) {
+	   if (err) throw err;
+	});
+});
+
+
 
 app.listen(3002, function() {
   console.log('User information app listening on port 3002!!!!!!');

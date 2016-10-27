@@ -1,0 +1,28 @@
+html
+	head
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js")
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+		link(href='https://fonts.googleapis.com/css?family=Cormorant+Garamond|Lora|Noto+Sans', rel='stylesheet')
+		link(rel='stylesheet', href='/style.css')
+	body
+		include navbar
+
+
+		form(action="/add-user" method="POST")
+			.row
+				.container-fluid
+					.col-xs-4
+					.col-xs-4
+						.form-group
+							h1 Add user on this page:
+							label(for='firstname') Firstname:
+							input#firstname.form-control(name="firstname" type='firstname', aria-describedby='Firstname', placeholder='Firstname')
+							label(for='lastname') Lastname:
+							input#lastname.form-control(name="lastname" type='lastname', aria-describedby='Lastname', placeholder='Lastname')
+							label(for='email') Email address:
+							input#email.form-control(name="email" type='email', aria-describedby='Email address', placeholder='Email address')
+							br
+							button.btn.btn-success(type='submit') Add user
