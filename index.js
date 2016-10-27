@@ -9,10 +9,11 @@ var dataInMemory = JSON.parse(fs.readFileSync('users.json').toString());
 
 var findUser = function(query) {
   for (var i = 0; i < dataInMemory.length; i++) {
-    if (dataInMemory[i].firstname === users.firstname || users.lastname) {
-      res.send(pug.renderFile('search-result.pug', { users: dataInMemory.users}));
-    } else {
-      return res.render('404.pug', { users: dataInMemory.users });
+    if (dataInMemory[i].firstname === query) {
+            var foundUser = dataInMemory[i];
+            return dataInMemory[i];
+        } else {
+            var foundUnder = 'Is not in our system.';
       }
     }
   };
@@ -22,8 +23,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false })); //send URL encoded data
 
 
-app.get('/', function(request, response) {
-  response.redirect('users');
+app.get('/', function(req, res) {
+  res.redirect('users');
 });
 
 app.get('/users', function(req, res) {
@@ -32,7 +33,7 @@ app.get('/users', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-  console.log('Search for the damn users');
+  console.log('Requesting /search');
   res.render('search.pug', { user: dataInMemory.users });
 });
 
@@ -41,24 +42,19 @@ app.get('/search/*', function(req, res) {
 });
 
 app.post('/search', function(req, res) {
-  console.log(request.body);
-  res.redirect('/search' + request.body.query);
+  console.log(req.body);
+  res.redirect('/search/' + req.body.query);
 });
 
 app.get('/search/*', function(req, res) {
-  res.send('Search a user with query:' + request.params[0]);
-  var foundUser = findUser(request.params[0]);
-
+  var foundUser = findUser(req.params[0]);
   if (foundUser === undefined) {
-    res.send(pug.renderFile('search-result.pug', { users: dataInMemory.users}));
+  res.send(pug.renderFile('search-result.pug', { users: dataInMemory.users}));
 
   } else {
-    res.render('404.pug', { users: dataInMemory.users });
+  res.render('404.pug', { users: dataInMemory.users });
   }
-
-
-// SEARCH GOES HERE
-
+  console.log(foundUser);
 });
 
 app.listen(3002, function() {
