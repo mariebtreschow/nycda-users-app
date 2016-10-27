@@ -7,16 +7,8 @@ const express = require('express'),
 
 var dataInMemory = JSON.parse(fs.readFileSync('users.json').toString());
 
-var findUser = function(query) {
-  for (var i = 0; i < dataInMemory.length; i++) {
-    if (dataInMemory[i].firstname === query) {
-            var foundUser = dataInMemory[i];
-            return dataInMemory[i];
-        } else {
-            var foundUnder = 'Is not in our system.';
-      }
-    }
-  };
+
+console.log(dataInMemory);
 
 app.use(express.static('public'));
 app.use(morgan('dev'));
@@ -34,11 +26,7 @@ app.get('/users', function(req, res) {
 
 app.get('/search', function(req, res) {
   console.log('Requesting /search');
-  res.render('search.pug', { user: dataInMemory.users });
-});
-
-app.get('/search/*', function(req, res) {
-  res.render('search-result', { user: dataInMemory.users });
+  res.render('search.pug', { users: dataInMemory.users });
 });
 
 app.post('/search', function(req, res) {
@@ -48,14 +36,33 @@ app.post('/search', function(req, res) {
 
 app.get('/search/*', function(req, res) {
   var foundUser = findUser(req.params[0]);
-  if (foundUser === undefined) {
-  res.send('search-result.pug', { users: dataInMemory.users});
-
+  if (foundUser) {
+    res.render('search-result.pug', { user: foundUser});
   } else {
-  res.send('404.pug', { users: dataInMemory.users });
+    res.render('404.pug', { user: foundUser});
   }
   console.log(foundUser);
 });
+
+function findUser(query) {
+  for (var i = 0; i < dataInMemory.users.length; i++) {
+    if (searchFirstName(query, dataInMemory.users[i]) || searchLastName(query, dataInMemory.users[i])) {
+        return dataInMemory.users[i];
+      }
+    }
+  }
+
+function searchFirstName(query, user) {
+    if (user.firstname.toLowerCase().includes(query.toLowerCase())) {
+      return true;
+    }
+  }
+
+function searchLastName(query, user) {
+    if (user.lastname.toLowerCase().includes(query.toLowerCase())) {
+      return true;
+    }
+  }
 
 app.listen(3002, function() {
   console.log('User information app listening on port 3002!!!!!!');
