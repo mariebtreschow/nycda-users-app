@@ -21,7 +21,7 @@ var findUser = function(query) {
 app.use(express.static('public'));
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false })); //send URL encoded data
-
+app.set('view engine', 'pug');
 
 app.get('/', function(req, res) {
   res.redirect('users');
@@ -38,7 +38,7 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/search/*', function(req, res) {
-  res.render('search');
+  res.render('search-result', { user: dataInMemory.users });
 });
 
 app.post('/search', function(req, res) {
@@ -49,10 +49,10 @@ app.post('/search', function(req, res) {
 app.get('/search/*', function(req, res) {
   var foundUser = findUser(req.params[0]);
   if (foundUser === undefined) {
-  res.send(pug.renderFile('search-result.pug', { users: dataInMemory.users}));
+  res.send('search-result.pug', { users: dataInMemory.users});
 
   } else {
-  res.render('404.pug', { users: dataInMemory.users });
+  res.send('404.pug', { users: dataInMemory.users });
   }
   console.log(foundUser);
 });
