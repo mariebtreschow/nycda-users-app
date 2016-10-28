@@ -62,7 +62,8 @@ app.get('/add-user', function(req, res) {
 });
 
 app.post('/add-user', function(req, res) {
-  dataInMemory.push(req.body);
+  console.log(req.body);
+  dataInMemory.users.push(req.body);
 
   res.redirect('/users/');
 
