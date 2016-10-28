@@ -58,29 +58,26 @@ function searchLastName(query, user) {
   }
 
 app.get('/add-user', function(req, res) {
-  console.log('Requesting /add user');
   res.render('add-user.pug', {});
 });
 
 app.post('/add-user', function(req, res) {
+  dataInMemory.push(req.body);
+
+  res.redirect('/users/');
+
   var user = {
     firstname: user.firstname,
     lastname: user.lastname,
     email: user.email
   };
 
-  dataInMemory.push(user);
-  res.redirect('/users/');
-
-  //stringify and send to json file
-
-	json = JSON.stringify(dataInMemory.users);
-
-	fs.writeFile('users.json', json, function (err) {
-	   if (err) throw err;
+	fs.writeFile('users.json', JSON.stringify(dataInMemory.users), function (err) {
+	   if (err) {
+       throw err;
+     }
 	});
 });
-
 
 
 app.listen(3002, function() {
