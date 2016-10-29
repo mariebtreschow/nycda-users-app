@@ -18,12 +18,12 @@ app.get('/', function(req, res) {
 
 app.get('/users', function(req, res) {
   console.log('Requesting /users');
-  res.render('application.pug', { users: dataInMemory.users });
+  res.render('layout.pug', { users: dataInMemory });
 });
 
 app.get('/search', function(req, res) {
   console.log('Requesting /search');
-  res.render('search.pug', { users: dataInMemory.users });
+  res.render('search.pug', { users: dataInMemory });
 });
 
 app.post('/search', function(req, res) {
@@ -42,9 +42,9 @@ app.get('/search/*', function(req, res) {
 });
 
 function findUser(query) {
-  for (var i = 0; i < dataInMemory.users.length; i++) {
-    if (searchFirstName(query, dataInMemory.users[i]) || searchLastName(query, dataInMemory.users[i])) {
-        return dataInMemory.users[i];
+  for (var i = 0; i < dataInMemory.length; i++) {
+    if (searchFirstName(query, dataInMemory[i]) || searchLastName(query, dataInMemory[i])) {
+        return dataInMemory[i];
       }
     }
   }
@@ -63,23 +63,16 @@ app.get('/add-user', function(req, res) {
 
 app.post('/add-user', function(req, res) {
   console.log(req.body);
-  dataInMemory.users.push(req.body);
+  dataInMemory.push(req.body);
 
   res.redirect('/users/');
 
-  var user = {
-    firstname: user.firstname,
-    lastname: user.lastname,
-    email: user.email
-  };
-
-	fs.writeFile('users.json', JSON.stringify(dataInMemory.users), function (err) {
+	fs.writeFile('users.json', JSON.stringify(dataInMemory), function (err) {
 	   if (err) {
        throw err;
      }
 	});
 });
-
 
 app.listen(3002, function() {
   console.log('User information app listening on port 3002!!!!!!');
