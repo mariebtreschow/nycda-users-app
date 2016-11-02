@@ -74,6 +74,21 @@ app.post('/add-user', function(req, res) {
 	});
 });
 
+var likeCount = JSON.parse(fs.readFileSync('likes.json')).likes;
+
+app.post('/likes', function(req, res) {
+  var likeCount = likeCount + 1;
+
+  var likeCountJSONString = JSON.stringify({ likes : likeCount });
+
+  res.json(likeCountJSONString);
+
+  fs.writeFile('likes.json', likeCountJSONString, function () {
+    console.log('Likes added to data!');
+  });
+});
+
+
 app.listen(3002, function() {
   console.log('User information app listening on port 3002!!!!!!');
 });

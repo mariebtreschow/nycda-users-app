@@ -2,3 +2,7 @@ nav.navbar.navbar-default {
   letter-spacing: 1px;
 
 }
+
+ul.nav.navbar-nav li button {
+  align: right;
+}
