@@ -13,6 +13,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false })); //send URL encoded data
 app.set('view engine', 'pug');
 
+//============================================
+
 app.get('/', function(req, res) {
   res.redirect('users');
 });
@@ -21,6 +23,8 @@ app.get('/users', function(req, res) {
   console.log('Requesting /users');
   res.render('layout.pug', { users: dataInMemory });
 });
+
+//SEARCH FUNCTION======================================
 
 app.get('/search', function(req, res) {
   console.log('Requesting /search');
@@ -61,6 +65,8 @@ function searchLastName(query, user) {
      return user.lastname.toLowerCase().includes(query.toLowerCase());
   }
 
+//ADD A USER =======================================
+
 app.get('/add-user', function(req, res) {
   res.render('add-user.pug', {});
 });
@@ -78,19 +84,24 @@ app.post('/add-user', function(req, res) {
 	});
 });
 
-var likeCount = JSON.parse(fs.readFileSync('likes.json')).likes;
+//LIKES=======================================
+
+var likeCountStore = JSON.parse(fs.readFileSync('likes.json'));
 
 app.post('/likes', function(req, res) {
-  var likeCount = likeCount + 1;
+likeCountStore.likeCount = likeCountStore.likeCount + 1
 
-  var likeCountJSONString = JSON.stringify({ likes : likeCount });
+res.json(likeCountStore);
 
-  res.json(likeCountJSONString);
-
-  fs.writeFile('likes.json', likeCountJSONString, function () {
-    console.log('Likes added to data!');
+fs.writeFile('likes.json', JSON.stringify(likeCountStore), (error, data) => {
+  if (error) {
+    throw error;
+      }
+console.log('Likes added via likeCountStore to the likes.json')
   });
 });
+
+//SEARCH IN NAVBAR =========================
 
 app.get('/api/search/*', function(req, res) {
   var result = findUser(req.params[0]);
@@ -100,8 +111,7 @@ app.get('/api/search/*', function(req, res) {
  res.json(result);
 });
 
-
-
+// WEBB SERVER =======================================
 
 app.listen(3002, function() {
   console.log('User information app listening on port 3002!!!!!!');
