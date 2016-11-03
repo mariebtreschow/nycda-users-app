@@ -9,9 +9,10 @@ nav.navbar.navbar-inverse
           a(href='/search') SEARCH USER
         li
           a(href='/add-user') ADD USER
-        form(action="/search-navbar" method="GET").navbar-form.navbar-left
+        form(class="application-search" action="/api/search/" method="GET").navbar-form.navbar-left
           .form-group
-            input#searchFor.form-control(name="searchFor" type='text', placeholder='Search')
+            input#searchFor.form-control(name="query" type='text', placeholder='Search')
+            ul.search-users
             button.btn.btn-default(type='submit') Submit
         li
-          button(class="btn-lg btn-success like-button pull-right") LIKE THE APP
+          button(class="btn-lg btn-success like-button") LIKE THE APP

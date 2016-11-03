@@ -3,6 +3,7 @@ const express = require('express'),
       morgan = require('morgan'),
       fs = require('fs'),
       bodyParser = require('body-parser'),
+      chalk = require('chalk'),
       app = express();
 
 var dataInMemory = JSON.parse(fs.readFileSync('users.json').toString());
@@ -32,21 +33,24 @@ app.post('/search', function(req, res) {
 });
 
 app.get('/search/*', function(req, res) {
-  var foundUser = findUser(req.params[0]);
-  if (foundUser) {
-    res.render('search-result.pug', { user: foundUser});
+  var foundUsers = findUser(req.params[0]);
+  if (foundUsers) {
+    res.render('search-result.pug', { userlist: foundUsers});
   } else {
-    res.render('404.pug', { user: foundUser});
+    res.render('404.pug', { userlist: foundUsers});
   }
-  console.log(foundUser);
+  console.log(foundUsers);
 });
 
 function findUser(query) {
+  var results = [];
   for (var i = 0; i < dataInMemory.length; i++) {
     if (searchFirstName(query, dataInMemory[i]) || searchLastName(query, dataInMemory[i])) {
-        return dataInMemory[i];
+        results.push(dataInMemory[i]);
       }
     }
+    console.log(results);
+    return results;
   }
 
 function searchFirstName(query, user) {
@@ -87,6 +91,16 @@ app.post('/likes', function(req, res) {
     console.log('Likes added to data!');
   });
 });
+
+app.get('/api/search/*', function(req, res) {
+  var result = findUser(req.params[0]);
+  console.log(chalk.green('RESULTS ARE:'));
+  console.log(result);
+
+ res.json(result);
+});
+
+
 
 
 app.listen(3002, function() {
