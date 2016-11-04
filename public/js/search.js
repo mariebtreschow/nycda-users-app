@@ -1,21 +1,24 @@
-
-$('#searchFor').keyup(function() {
+$('.application-search').on('keyup', function(event) {
   console.log('Keyup is executing!');
 
-  $(".application-search input").on('keyup', function() {
-    var query = $(this).val();
+  var $input = $(event.currentTarget);
+  var query = $input.val();
 
     console.log('Value of my inpuuuut:');
     console.log(query);
 
-    $.get('/api/search/' + query, function(data) {
-      console.log(data);
-      $('.search-users').html('');
+    if (query !== "") {
+    $.get('/api/search/' + query, function(body) {
+
+      console.log(body);
+      $('.application-search-results').html('');
+
       data.forEach(function(element){
-        $('.search-users').append(
-          $('<li>' + element.firstname + ' ' + element.lastname + '</li>')
-        );
+        $('.application-search-results').append(
+          $('<li>' + element.firstname + ' '
+          + element.lastname + '</li>')
+          );
+        });
       });
-    });
-  });
+  }
 });

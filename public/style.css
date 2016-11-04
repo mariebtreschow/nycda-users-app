@@ -3,21 +3,23 @@ nav.navbar.navbar-default {
 
 }
 
-.search-users {
-  padding: 0;
-  position: absolute;
-  z-index: 999;
-  top: 45px;
+.navbar-form .form-control {
+    display: inline-block;
+    width: 250px;
+    vertical-align: middle;
+
 }
 
 
-.search-users li {
-  width: 400px;
-  height: 50px;
-  background: white;
-  list-style-type: none;
-  display: block;
-  text-align: center;
-  padding-top: 12px;
-  border: solid 1px lightgrey;
+}
+.container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: 0;
+    margin-left: 0;
+    height: 10px;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    height: 10px;
 }

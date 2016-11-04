@@ -37,16 +37,16 @@ app.post('/search', function(req, res) {
 });
 
 app.get('/search/*', function(req, res) {
-  var foundUsers = findUser(req.params[0]);
+  var foundUsers = findUsers(req.params[0]);
   if (foundUsers) {
     res.render('search-result.pug', { userlist: foundUsers});
   } else {
-    res.render('404.pug', { userlist: foundUsers});
+    console.log(status(404));
   }
   console.log(foundUsers);
 });
 
-function findUser(query) {
+function findUsers(query) {
   var results = [];
   for (var i = 0; i < dataInMemory.length; i++) {
     if (searchFirstName(query, dataInMemory[i]) || searchLastName(query, dataInMemory[i])) {
@@ -89,26 +89,26 @@ app.post('/add-user', function(req, res) {
 var likeCountStore = JSON.parse(fs.readFileSync('likes.json'));
 
 app.post('/likes', function(req, res) {
-likeCountStore.likeCount = likeCountStore.likeCount + 1
+  likeCountStore.likeCount = likeCountStore.likeCount + 1;
 
-res.json(likeCountStore);
+  res.json(likeCountStore);
 
-fs.writeFile('likes.json', JSON.stringify(likeCountStore), (error, data) => {
+  fs.writeFile('likes.json', JSON.stringify(likeCountStore), (error, data) => {
   if (error) {
     throw error;
       }
-console.log('Likes added via likeCountStore to the likes.json')
+console.log('Likes added via likeCountStore to the likes.json');
   });
 });
 
 //SEARCH IN NAVBAR =========================
 
-app.get('/api/search/*', function(req, res) {
-  var result = findUser(req.params[0]);
+app.get('/api/search/:query', function(req, res) {
+  var result = findUsers(req.params[0]);
   console.log(chalk.green('RESULTS ARE:'));
   console.log(result);
 
- res.json(result);
+res.json(result);
 });
 
 // WEBB SERVER =======================================

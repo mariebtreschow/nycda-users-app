@@ -1,22 +1,22 @@
 nav.navbar.navbar-inverse
-  .container-fluid
+	.container-fluid
+		#bs-example-navbar-collapse-1.collapse.navbar-collapse
+			ul.nav.navbar-nav
+				li
+					a(href='/') USER INFORMATION
+				li
+					a(href='/search') SEARCH USER
+				li
+					a(href='/add-user') ADD USER
+			ul.navbar-form.navbar-right
+				form(class="form-inline float-right application-search")
+					input#application-search(class="form-control" type='text', placeholder='Search')
+					button(class="btn btn-outline-success" type='submit') Submit
+					ul.application-search-results
+			li
+				button(type="button" class="btn-lg btn-success like-button") Like this app:
 
-    #bs-example-navbar-collapse-1.collapse.navbar-collapse
-      ul.nav.navbar-nav
-        li
-          a(href='/') USER INFORMATION
-        li
-          a(href='/search') SEARCH USER
-        li
-          a(href='/add-user') ADD USER
-        form(class="application-search" action="/api/search/" method="GET").navbar-form.navbar-left
-          .form-group
-            input#searchFor.form-control(name="query" type='text', placeholder='Search')
-            ul.search-users
-            button.btn.btn-default(type='submit') Submit
-        li
-          button(type="button" class="btn-lg btn-success like-button") Like this app:
 
-    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js")
-    script(src="/js/likes.js")
-    script(src="/js/search.js")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js")
+		script(src="/js/likes.js")
+		script(src="/js/search.js")
